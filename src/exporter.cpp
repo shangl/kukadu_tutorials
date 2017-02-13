@@ -7,9 +7,20 @@ using namespace kukadu;
 
 int main(int argc, char** args) {
 
+    bool exportFunctionStatistics = true;
+    bool compress = true;
     string outFolder = "/tmp/data";
-    if(argc == 2)
-        outFolder = string(args[1]);
+
+    for(int i = 1; i < argc; ++i) {
+        KukaduTokenizer tok(args[i], "=");
+        auto currTok = tok.next();
+        if(currTok == "-c" && tok.next() == "false")
+            compress = false;
+        else if(currTok == "-f" && tok.next() == "false")
+            exportFunctionStatistics = false;
+        else
+            outFolder = string(args[i]);
+    }
 
     ros::init(argc, args, "kukadu_skillexporter_demo"); ros::NodeHandle node; sleep(1);
     ros::AsyncSpinner spinner(10); spinner.start();
@@ -72,7 +83,7 @@ int main(int argc, char** args) {
     int executionSelection = 0;
     cin >> executionSelection;
 
-    exporter.exportSkillExecutions(skillSelection, get<0>(executions.at(executionSelection)), get<1>(executions.back()), outFolder);
+    exporter.exportSkillExecutions(skillSelection, get<0>(executions.at(executionSelection)), get<1>(executions.back()), outFolder, exportFunctionStatistics, compress);
 
     return 0;
 
