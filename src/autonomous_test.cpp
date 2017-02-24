@@ -38,10 +38,17 @@ int main(int argc, char** args) {
         std::vector<long long int> startTimes;
         std::vector<long long int> endTimes;
         long long int timeStep;
-        auto importedSkill = exporter.loadExecutions(inputFolder, startTimes, endTimes, timeStep);
 
+/*
+        auto importedSkill = exporter.loadExecutions(inputFolder, startTimes, endTimes, timeStep);
         AutonomousTester tester(storage, "simple_grasp", {}, importedSkill, startTimes, endTimes, timeStep);
         tester.testSkill("simple_grasp");
+*/
+
+        AutonomousTester tester(storage, true, {2});
+        tester.addSimulatedSkill("simple_grasp", {0, 1}, {10.0, 20.0}, {3.0, 4.0}, 200, 2000);
+
+        tester.testRobot();
 
         /*
         while(true) {
