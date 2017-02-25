@@ -45,8 +45,9 @@ int main(int argc, char** args) {
         tester.testSkill("simple_grasp");
 */
 
-        AutonomousTester tester(storage, true, {2});
+        AutonomousTester tester(storage, true, {1});
         tester.addSimulatedSkill("simple_grasp", {0, 1}, {10.0, 20.0}, {3.0, 4.0}, 200, 2000);
+        tester.addSimulatedSkill("simple_grasp2", {1, 3}, {10.0, 20.0}, {3.0, 4.0}, 200, 2000);
 
         tester.testRobot();
 
