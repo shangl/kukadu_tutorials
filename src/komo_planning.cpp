@@ -10,10 +10,14 @@ int main(int argc, char** args) {
     ros::init(argc, args, "kukadu_planning"); ros::NodeHandle node; sleep(1);
     ros::AsyncSpinner spinner(10); spinner.start();
 
+    string robotType = "simulation";
+    if(argc == 2)
+        robotType = string(args[1]);
+
     StorageSingleton& storage = StorageSingleton::get();
 
     cout << "setting up control queue" << endl;
-    auto realLeftQueue = make_shared<KukieControlQueue>(storage, "robinn", "simulation", "left_arm", node);
+    auto realLeftQueue = make_shared<KukieControlQueue>(storage, "robinn", robotType, "left_arm", node);
     realLeftQueue->install();
 
     auto komo = make_shared<Komo>(realLeftQueue, resolvePath("$KUKADU_HOME/external/komo/share/data/kuka/data/iis_robot.kvg"), resolvePath("$KUKADU_HOME/external/komo/share/data/kuka/config/MT.cfg"), realLeftQueue->getRobotSidePrefix());
@@ -35,7 +39,7 @@ int main(int argc, char** args) {
     realLeftQueue->jointPtp({-1.5, 1.56, 2.33, -1.74, -1.85, 1.27, 0.71});
 
     cout << "ptp without max force" << endl;
-    geometry_msgs::Pose nextPose; nextPose.position.x = 0.3; nextPose.position.y = 1.3; nextPose.position.z = 0.6;
+    geometry_msgs::Pose nextPose; nextPose.position.x = 0.1; nextPose.position.y = 1.2; nextPose.position.z = 0.6;
     nextPose.orientation.x = -0.06; nextPose.orientation.y = -0.14; nextPose.orientation.z = -0.29; nextPose.orientation.w = 0.94;
     realLeftQueue->cartesianPtp(nextPose);
     cout << "first ptp done" << endl;

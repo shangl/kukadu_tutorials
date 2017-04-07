@@ -28,7 +28,7 @@ int main(int argc, char** args) {
     realLeftQueue->jointPtp({-1.5, 1.56, 2.33, -1.74, -1.85, 1.27, 0.71});
 
     cout << "ptp without max force" << endl;
-    geometry_msgs::Pose nextPose; nextPose.position.x = 0.3; nextPose.position.y = 1.3; nextPose.position.z = 0.6;
+    geometry_msgs::Pose nextPose; nextPose.position.x = 0.1; nextPose.position.y = 0.7; nextPose.position.z = 0.6;
     nextPose.orientation.x = -0.06; nextPose.orientation.y = -0.14; nextPose.orientation.z = -0.29; nextPose.orientation.w = 0.94;
     realLeftQueue->cartesianPtp(nextPose);
     cout << "first ptp done" << endl;

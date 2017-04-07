@@ -103,10 +103,13 @@ int main(int argc, char** args) {
     } else {
 
         cout << "loading data" << endl;
-        auto importedSkill = exporter.loadExecutions(inputFolder);
+        std::vector<long long int> startTimes;
+        std::vector<long long int> endTimes;
+        long long int timeStep;
+        auto importedSkill = exporter.loadExecutions(inputFolder, startTimes, endTimes, timeStep);
 
         cout << "computing all pairwise distances" << endl;
-        mat allDistances = exporter.computeAllNearestNeighbours(importedSkill.second);
+        mat allDistances = exporter.computeAllDistances(importedSkill.second);
         auto& successLabels = importedSkill.first;
 
         ofstream distancesFile;

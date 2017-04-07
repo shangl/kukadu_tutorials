@@ -12,8 +12,8 @@
 #include <termios.h>
 #include <ros/ros.h>
 #include <std_msgs/Int32.h>
-#include <boost/program_options.hpp>
 #include <kukadu/kukadu.hpp>
+#include <boost/program_options.hpp>
 
 #define DOSIMULATION 1
 
@@ -76,39 +76,20 @@ int main(int argc, char** args) {
     auto simLeftQueue = make_shared<KukieControlQueue>(storage, "robinn", "simulation", arm + string("_arm"), *node);
     simLeftQueue->install();
 
-    SensorStorage::transferArmDataToDb(storage, simLeftQueue, resolvePath("$HOME/iis_robot_sw/iis_catkin_ws/src/hangl_2016_tro/experiment/movements/push_fin/kuka_lwr_real_left_arm_0"));
-    getchar();
+    string fileLoadPath = "/tmp/kukadu_demo_guided/kuka_lwr_real_left_arm_0";
+
+    //cout << "transferring file to db" << endl;
+    //auto timeSteps = SensorStorage::transferArmDataToDb(storage, simLeftQueue, resolvePath(fileLoadPath));
+    //cout << "done" << endl;
 
     vector<KUKADU_SHARED_PTR<ControlQueue> > queueVectors;
     queueVectors.push_back(simLeftQueue);
 
-    deleteDirectory(storeDir);
+    //deleteDirectory(storeDir);
 
     simLeftQueue->stopCurrentMode();
     simLeftQueue->startQueue();
     simLeftQueue->switchMode(KukieControlQueue::KUKA_JNT_POS_MODE);
-
-    /*
-    // this is how to use the SensorStorageSingleton
-    cout << "creating singleton" << endl;
-    auto& storageSingleton = SensorStorageSingleton::get();
-
-    cout << "registering queue" << endl;
-    storageSingleton.registerHardware(simLeftQueue);
-
-    cout << "initiating the storage" << endl;
-    storageSingleton.initiateStorageAllRegistered();
-
-    cout << "storing data" << endl;
-    ros::Rate r(0.5);
-    r.sleep();
-
-    cout << "stopping the storage" << endl;
-    storageSingleton.stopStorageAll();
-
-    cout << "press key to continue" << endl;
-    getchar();
-    */
 
     string skillName = "";
     cout << "insert the desired name of the skill you want to create or load...";
@@ -119,6 +100,7 @@ int main(int argc, char** args) {
 
         cout << "skill with this name does not exist yet --> creating it" << endl;
 
+        /*
         simLeftQueue->jointPtp({-0.7, 0.7, 1.5, -1.74, -1.85, 1.27, 0.71});
 
         cout << "press enter to measure trajectory" << endl;
@@ -137,24 +119,29 @@ int main(int argc, char** args) {
 
         cout << "press enter to execute in simulation" << endl;
         getchar();
+        */
 
         KUKADU_SHARED_PTR<Dmp> sampleDmp;
         KUKADU_SHARED_PTR<SensorData> sampleData;
         KUKADU_SHARED_PTR<JointDMPLearner> sampleDmpLearner;
 
         arma::vec sampleTimes;
-        sampleData = SensorStorage::readStorage(simLeftQueue, storeDir + string("/kuka_lwr_") + prefix + string("_left_arm_0"));
+
+        sampleData = SensorStorage::readStorage(simLeftQueue, fileLoadPath);
         sampleTimes = sampleData->getNormalizedTimeInSeconds();
         sampleDmpLearner = make_shared<JointDMPLearner>(az, bz, sampleTimes, sampleData->getJointPos());
+
         sampleDmp = sampleDmpLearner->fitTrajectories();
 
         DMPExecutor sampleExec(storage, sampleDmp, simLeftQueue);
+
         sampleExec.setExecutionMode(TrajectoryExecutor::EXECUTE_ROBOT);
         sampleExec.setAc(ac);
 
         sampleExec.createSkillFromThis(skillName);
 
         auto executionResult = sampleExec.execute();
+
         vec firstColSamples = sampleData->getJointPos().col(0);
 
         auto timesExecuted = executionResult->getTimes();
