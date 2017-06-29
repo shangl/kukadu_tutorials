@@ -26,7 +26,8 @@ int main(int argc, char** args) {
     ModuleUsageSingleton::get().stopStatisticsModule();
 
     cout << "setting up control queue" << endl;
-    auto realLeftQueue = make_shared<KukieControlQueue>(storage, "robinn", (simulation) ? "simulation" : "real", "left_arm", node);
+    auto hardwareFactory = HardwareFactory::get();
+    auto realLeftQueue = dynamic_pointer_cast<KukieControlQueue>(hardwareFactory.loadHardware("kukie_left_arm"));
     realLeftQueue->install();
 
     cout << "starting queue" << endl;

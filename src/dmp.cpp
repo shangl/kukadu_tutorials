@@ -73,7 +73,7 @@ int main(int argc, char** args) {
 
     StorageSingleton& storage = StorageSingleton::get();
 
-    auto simLeftQueue = make_shared<KukieControlQueue>(storage, "robinn", "simulation", arm + string("_arm"), *node);
+    auto simLeftQueue = make_shared<KukieControlQueue>(storage, "simulation", arm + string("_arm"), *node);
     simLeftQueue->install();
 
     string fileLoadPath = "/tmp/kukadu_demo_guided/kuka_lwr_real_left_arm_0";

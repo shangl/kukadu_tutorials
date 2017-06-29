@@ -49,10 +49,10 @@ int main(int argc, char** args) {
     auto rightHand = make_shared<KukieHand>(storage, node, "simulation", "right");
     rightHand->install();
 
-    auto leftArm = make_shared<KukieControlQueue>(storage, "robinn", "simulation", "left_arm", node);
+    auto leftArm = make_shared<KukieControlQueue>(storage, "simulation", "left_arm", node);
     leftArm->install();
 
-    auto rightArm = make_shared<KukieControlQueue>(storage, "robinn", "simulation", "right_arm", node);
+    auto rightArm = make_shared<KukieControlQueue>(storage, "simulation", "right_arm", node);
     rightArm->install();
 
     sensorSingleton.registerHardware(leftHand);

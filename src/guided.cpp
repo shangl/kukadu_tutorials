@@ -73,8 +73,8 @@ int main(int argc, char** args) {
 
     StorageSingleton& storage = StorageSingleton::get();
 
-    auto leftQueue = make_shared<KukieControlQueue>(storage, "robinn", "real", arm + "_arm", *node);
-    auto simLeftQueue = make_shared<KukieControlQueue>(storage, "robinn", "simulation", arm + "_arm", *node);
+    auto leftQueue = make_shared<KukieControlQueue>(storage, "real", arm + "_arm", *node);
+    auto simLeftQueue = make_shared<KukieControlQueue>(storage, "simulation", arm + "_arm", *node);
 
     leftQueue->install();
     simLeftQueue->install();
