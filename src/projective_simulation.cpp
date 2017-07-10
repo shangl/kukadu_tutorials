@@ -3,6 +3,8 @@
 #include <armadillo>
 #include <kukadu/kukadu.hpp>
 
+/*
+
 using namespace std;
 using namespace arma;
 using namespace kukadu;
@@ -67,9 +69,9 @@ public:
     }
 
 };
-
+*/
 int main(int argc, char** args) {
-
+/*
     ros::init(argc, args, "kukadu_projective_simulation_demo"); ros::NodeHandle node; sleep(1);
     ros::AsyncSpinner spinner(10); spinner.start();
 
@@ -93,7 +95,7 @@ int main(int argc, char** args) {
     TreeDrawer t(1024, 768);
     t.drawTree(ps);
     t.waitForEnter();
-
-    return 0;
+*/
+    return EXIT_SUCCESS;
 
 }

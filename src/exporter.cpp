@@ -7,7 +7,7 @@ using namespace arma;
 using namespace kukadu;
 
 int main(int argc, char** args) {
-
+/*
     bool compress = true;
     bool loadSkills = false;
     bool exportFunctionStatistics = true;
@@ -174,7 +174,7 @@ int main(int argc, char** args) {
         distancesFile.close();
 
     }
-
-    return 0;
+*/
+    return EXIT_SUCCESS;
 
 }

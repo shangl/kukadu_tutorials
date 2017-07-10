@@ -6,7 +6,7 @@ using namespace arma;
 using namespace kukadu;
 
 int main(int argc, char** args) {
-
+/*
     cout << "setting up ros node" << endl;
     ros::init(argc, args, "kukadu_controlqueue_demo"); ros::NodeHandle node; sleep(1);
     ros::AsyncSpinner spinner(10); spinner.start();
@@ -26,12 +26,27 @@ int main(int argc, char** args) {
     ModuleUsageSingleton::get().stopStatisticsModule();
 
     cout << "setting up control queue" << endl;
+    //auto realLeftQueue = make_shared<KukieControlQueue>(storage, "simulation", "left_arm", node);
     auto hardwareFactory = HardwareFactory::get();
     auto realLeftQueue = dynamic_pointer_cast<KukieControlQueue>(hardwareFactory.loadHardware("kukie_left_arm"));
     realLeftQueue->install();
 
     cout << "starting queue" << endl;
     auto realLqThread = realLeftQueue->startQueue();
+
+    //auto realLeftHand = make_shared<KukieHand>(storage, node, true, "left");
+    //auto realRightHand = make_shared<KukieHand>(storage, node, true, "right");
+
+    cout << "kukiehand_left is installed: " << hardwareFactory.hardwareExists("kukiehand_left") << endl;
+
+    auto realLeftHand = dynamic_pointer_cast<KukieHand>(hardwareFactory.loadHardware("kukiehand_left"));
+    realLeftHand->install();
+
+    auto realRightHand = dynamic_pointer_cast<KukieHand>(hardwareFactory.loadHardware("kukiehand_right"));
+    realRightHand->install();
+
+    realLeftHand->moveJoints(stdToArmadilloVec({0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}));
+    realLeftHand->moveJoints(stdToArmadilloVec({0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0}));
 
     cout << "switching to impedance mode if it is not there yet" << endl;
     if(realLeftQueue->getCurrentMode() != KukieControlQueue::KUKA_JNT_IMP_MODE) {
@@ -80,7 +95,7 @@ int main(int argc, char** args) {
     cout << "press a key to end the program" << endl;
     getchar();
 
-    /****** done with moving? --> clean up everything and quit *******/
+    // done with moving? --> clean up everything and quit
 
     // leaves the mode for robot movement
     realLeftQueue->stopCurrentMode();
@@ -89,6 +104,7 @@ int main(int argc, char** args) {
     realLeftQueue->stopQueue();
 
     storage.waitForEmptyCache();
+    */
 
     return EXIT_SUCCESS;
 

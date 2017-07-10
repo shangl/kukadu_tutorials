@@ -24,6 +24,8 @@ int main(int argc, char** args) {
         }
     }
 
+    loadSkills = true;
+
     ros::init(argc, args, "kukadu_skillexporter_demo"); ros::NodeHandle node; sleep(1);
     ros::AsyncSpinner spinner(10); spinner.start();
 

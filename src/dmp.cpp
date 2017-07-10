@@ -23,7 +23,7 @@ using namespace kukadu;
 namespace po = boost::program_options;
 
 int main(int argc, char** args) {
-
+/*
     double tau, az, bz, dmpStepSize, tolAbsErr, tolRelErr, ac;
 
     string storeDir = resolvePath("/tmp/kukadu_demo_guided");
@@ -100,26 +100,26 @@ int main(int argc, char** args) {
 
         cout << "skill with this name does not exist yet --> creating it" << endl;
 
-        /*
-        simLeftQueue->jointPtp({-0.7, 0.7, 1.5, -1.74, -1.85, 1.27, 0.71});
 
-        cout << "press enter to measure trajectory" << endl;
-        getchar();
+        //simLeftQueue->jointPtp({-0.7, 0.7, 1.5, -1.74, -1.85, 1.27, 0.71});
 
-        cout << "starting measurement" << endl;
-        SensorStorage sensorStorage(storage, queueVectors, std::vector<KUKADU_SHARED_PTR<GenericHand> >(), 1000);
-        sensorStorage.setExportMode(SensorStorage::STORE_RBT_CART_POS | SensorStorage::STORE_RBT_JNT_POS);
-        sensorStorage.startDataStorage(storeDir);
-        cout << "measurement started" << endl;
+        //cout << "press enter to measure trajectory" << endl;
+        //getchar();
 
-        ros::Rate r(2); r.sleep();
-        simLeftQueue->jointPtp({-1.5, 1.56, 2.33, -1.74, -1.85, 1.27, 0.71});
+        //cout << "starting measurement" << endl;
+        //SensorStorage sensorStorage(storage, queueVectors, std::vector<KUKADU_SHARED_PTR<GenericHand> >(), 1000);
+        //sensorStorage.setExportMode(SensorStorage::STORE_RBT_CART_POS | SensorStorage::STORE_RBT_JNT_POS);
+        //sensorStorage.startDataStorage(storeDir);
+        //cout << "measurement started" << endl;
 
-        sensorStorage.stopDataStorage();
+        //ros::Rate r(2); r.sleep();
+        //simLeftQueue->jointPtp({-1.5, 1.56, 2.33, -1.74, -1.85, 1.27, 0.71});
 
-        cout << "press enter to execute in simulation" << endl;
-        getchar();
-        */
+        //sensorStorage.stopDataStorage();
+
+        //cout << "press enter to execute in simulation" << endl;
+        //getchar();
+
 
         KUKADU_SHARED_PTR<Dmp> sampleDmp;
         KUKADU_SHARED_PTR<SensorData> sampleData;
@@ -177,7 +177,7 @@ int main(int argc, char** args) {
     storage.waitForEmptyCache();
 
     cout << "done - exit" << endl;
-
+*/
     return EXIT_SUCCESS;
 
 }

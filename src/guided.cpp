@@ -23,7 +23,7 @@ using namespace kukadu;
 namespace po = boost::program_options;
 
 int main(int argc, char** args) {
-
+/*
     double tau, az, bz, dmpStepSize, tolAbsErr, tolRelErr, ac;
 
     string storeDir = resolvePath("/tmp/kukadu_demo_guided");
@@ -169,7 +169,7 @@ int main(int argc, char** args) {
     leftQueue->stopQueue();
 
     storage.waitForEmptyCache();
-
+*/
     return EXIT_SUCCESS;
 
 }
