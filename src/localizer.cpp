@@ -16,11 +16,9 @@ int main(int argc, char** args) {
     thread transformThread(publishKinectTransform);
 
     auto kinect = make_shared<Kinect>(storage, node, true);
-    /*
-    auto kinect = HardwareFactory::get().loadHardware("camera");
+    //auto kinect = HardwareFactory::get().loadHardware("camera");
     kinect->install();
     kinect->start();
-    */
 
     auto localizerSkill = make_shared<LocalizeObject>(storage, KUKADU_DYNAMIC_POINTER_CAST<Kinect>(kinect));
     try { localizerSkill->createSkillFromThis("localize_object"); } catch(KukaduException& ex) {}
