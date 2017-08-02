@@ -15,15 +15,10 @@ int main(int argc, char** args) {
 
     thread transformThread(publishKinectTransform);
 
-    auto kinect = make_shared<Kinect>(storage, node, true);
-    //auto kinect = HardwareFactory::get().loadHardware("camera");
+
+    auto kinect = HardwareFactory::get().loadHardware("camera");
     kinect->install();
     kinect->start();
-
-    auto localizerSkill = make_shared<LocalizeObject>(storage, KUKADU_DYNAMIC_POINTER_CAST<Kinect>(kinect));
-    try { localizerSkill->createSkillFromThis("localize_object"); } catch(KukaduException& ex) {}
-
-    localizerSkill->execute();
 
     auto& vis = VisualizerSingleton::get();
     vis.startWindow();
@@ -32,6 +27,11 @@ int main(int argc, char** args) {
     vis.drawLine("coordinateFrameY", 0, 0, 0, 0, 2, 0);
     vis.drawLine("coordinateFrameZ", 0, 0, 0, 0, 0, 1);
     vis.showPointCloud("pc", KUKADU_DYNAMIC_POINTER_CAST<Kinect>(kinect)->getCurrentColorPointCloud());
+
+    auto localizerSkill = make_shared<LocalizeObject>(storage, KUKADU_DYNAMIC_POINTER_CAST<Kinect>(kinect));
+    try { localizerSkill->createSkillFromThis("localize_object"); } catch(KukaduException& ex) {}
+
+    localizerSkill->execute();
 
     cout << "press a key to end the program" << endl;
     getchar();
