@@ -46,7 +46,6 @@ int main(int argc, char** args) {
     position.pose.orientation.z = rot.getZ();
     position.pose.orientation.w = rot.getW();
 
-
     auto kukiehand = HardwareFactory::get().loadHardware("kukiehand_left");
     kukiehand->install();
     kukiehand->start();
@@ -62,7 +61,7 @@ int main(int argc, char** args) {
     kukiearm->install();
     kukiearm->start();
 
-//    KUKADU_DYNAMIC_POINTER_CAST<ControlQueue>(kukiearm)->jointPtp({-1.5, 1.56, 2.33, -1.74, -1.85, 1.27, 0.71});
+    KUKADU_DYNAMIC_POINTER_CAST<ControlQueue>(kukiearm)->jointPtp({-1.5, 1.56, 2.33, -1.74, -1.85, 1.27, 0.71});
 
     auto graspSkill =  SkillFactory::get().loadSkill("CartesianPtp", {kukiearm});
 
