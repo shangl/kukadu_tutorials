@@ -17,7 +17,6 @@ int main(int argc, char** args) {
 
     thread transformThread(publishKinectTransform);
 
-
     auto kinect = HardwareFactory::get().loadHardware("camera");
     kinect->install();
     kinect->start();
@@ -29,6 +28,12 @@ int main(int argc, char** args) {
     vis.drawLine("coordinateFrameY", 0, 0, 0, 0, 2, 0);
     vis.drawLine("coordinateFrameZ", 0, 0, 0, 0, 0, 1);
     vis.showPointCloud("pc", KUKADU_DYNAMIC_POINTER_CAST<Kinect>(kinect)->getCurrentColorPointCloud());
+
+    auto kukiearm = HardwareFactory::get().loadHardware("kukie_left_arm");
+    kukiearm->install();
+    kukiearm->start();
+
+    KUKADU_DYNAMIC_POINTER_CAST<ControlQueue>(kukiearm)->jointPtp({-1.5, 1.56, 2.33, -1.74, -1.85, 1.27, 0.71});
 
     auto localizerSkill = make_shared<LocalizeObject>(storage, KUKADU_DYNAMIC_POINTER_CAST<Kinect>(kinect));
     try { localizerSkill->createSkillFromThis("localize_object"); } catch(KukaduException& ex) {}
@@ -55,13 +60,6 @@ int main(int argc, char** args) {
 
     openHandSkill->setJoints({1.0443761317587406, -0.9809909670230643, 0.8357773148965317, -1.16191880779005, 1.1662613582635333, -1.164864130797623, 1.1698461062488343});
     openHandSkill->execute();
-
-
-    auto kukiearm = HardwareFactory::get().loadHardware("kukie_left_arm");
-    kukiearm->install();
-    kukiearm->start();
-
-    KUKADU_DYNAMIC_POINTER_CAST<ControlQueue>(kukiearm)->jointPtp({-1.5, 1.56, 2.33, -1.74, -1.85, 1.27, 0.71});
 
     auto graspSkill =  SkillFactory::get().loadSkill("CartesianPtp", {kukiearm});
 
