@@ -4,18 +4,14 @@ using namespace std;
 using namespace arma;
 using namespace kukadu;
 
-void publishKinectTransform();
-
 int main(int argc, char** args) {
 
     ros::init(argc, args, "kukadu_artracker_demo"); ros::NodeHandle node; sleep(1);
     ros::AsyncSpinner spinner(10); spinner.start();
 
-    HardwareFactory::get().setSimulation(false);
+    HardwareFactory::get().setSimulation(true);
 
     auto& storage = StorageSingleton::get();
-
-    thread transformThread(publishKinectTransform);
 
     auto kinect = HardwareFactory::get().loadHardware("camera");
     kinect->install();
@@ -23,11 +19,10 @@ int main(int argc, char** args) {
 
     auto& vis = VisualizerSingleton::get();
     vis.startWindow();
-
     vis.drawLine("coordinateFrameX", 0, 0, 0, 2, 0, 0);
     vis.drawLine("coordinateFrameY", 0, 0, 0, 0, 2, 0);
     vis.drawLine("coordinateFrameZ", 0, 0, 0, 0, 0, 1);
-    vis.showPointCloud("pc", KUKADU_DYNAMIC_POINTER_CAST<Kinect>(kinect)->getCurrentColorPointCloud());
+    vis.showPointCloud("pc",  KUKADU_DYNAMIC_POINTER_CAST<Kinect>(kinect)->getCurrentColorPointCloud());
 
     auto kukiearm = HardwareFactory::get().loadHardware("kukie_left_arm");
     kukiearm->install();
@@ -38,13 +33,17 @@ int main(int argc, char** args) {
     auto localizerSkill = make_shared<LocalizeObject>(storage, KUKADU_DYNAMIC_POINTER_CAST<Kinect>(kinect));
     try { localizerSkill->createSkillFromThis("localize_object"); } catch(KukaduException& ex) {}
 
+    localizerSkill->setCenterZ(-0.5);
     localizerSkill->execute();
 
     auto position = PoseEstimatorFactory::get().getPoseFor("something");
+
     position.pose.position.x = position.pose.position.x - 0.43;
     position.pose.position.y = position.pose.position.y + 0.42;
     position.pose.position.z = position.pose.position.z - 0.03;
     position.pose.position.z = position.pose.position.z + 0.15;
+    //position.pose.position.z = position.pose.position.z + 0.15;
+    cout << position.pose.position.x << " " << position.pose.position.y << " " << position.pose.position.z << endl;
     tf::Quaternion rot = rpyToQuat(0.0, M_PI, 0.0);
     position.pose.orientation.x = rot.getX();
     position.pose.orientation.y = rot.getY();
@@ -91,24 +90,5 @@ int main(int argc, char** args) {
     storage.waitForEmptyCache();
 
     return EXIT_SUCCESS;
-
-}
-
-void publishKinectTransform() {
-
-    cout << "publishing calibration" << endl;
-    mat calibration(4, 4);
-    calibration(0, 0) = -0.02081469;    calibration(0, 1) = -0.99929153;    calibration(0, 2) = 0.03135609;     calibration(0, 3) = 0.1;
-    calibration(1, 0) = -0.99976864;    calibration(1, 1) = 0.02063391;     calibration(1, 2) = -0.00607739;    calibration(1, 3) = 0.563;
-    calibration(2, 0) = 0.00542609;     calibration(2, 1) = -0.03147533;    calibration(2, 2) = -0.99948982;    calibration(2, 3) = 1.393;
-    calibration(3, 0) = 0.0;            calibration(3, 1) = 0.0;            calibration(3, 2) = 0.0;            calibration(3, 3) = 1.0;
-    tf::TransformBroadcaster br;
-    auto transform = affineTransMatrixToTf(calibration);
-
-    ros::Rate r(10);
-    while(true) {
-        br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "camera_rgb_optical_frame", "origin"));
-        r.sleep();
-    }
 
 }
