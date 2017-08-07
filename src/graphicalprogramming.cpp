@@ -17,6 +17,8 @@ int main(int argc, char** args) {
     ros::init(argc, args, "kukadu");
     ros::NodeHandle* node = new ros::NodeHandle();
     usleep(1e6);
+    ros::AsyncSpinner spinner(10);
+    spinner.start();
 
     QApplication w(argc, args);
     w.setStyle(QStyleFactory::create("Fusion"));
