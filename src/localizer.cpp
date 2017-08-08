@@ -22,7 +22,12 @@ int main(int argc, char** args) {
     vis.drawLine("coordinateFrameX", 0, 0, 0, 2, 0, 0);
     vis.drawLine("coordinateFrameY", 0, 0, 0, 0, 2, 0);
     vis.drawLine("coordinateFrameZ", 0, 0, 0, 0, 0, 1);
-    vis.showPointCloud("pc",  KUKADU_DYNAMIC_POINTER_CAST<Kinect>(kinect)->getCurrentColorPointCloud());
+
+    vis.drawLine("center", 0.7, 0.3, 0.5, 0.7, 0.3, 1.3);
+    vis.drawLine("object", 0.7, 0.3, 0.5, 0.2, 0.63, 0.5);
+    vis.drawLine("objectcenter", 0.2, 0.63, 0.5, 0.2, 0.63, 0.0);
+
+    vis.showPointCloud("pc", KUKADU_DYNAMIC_POINTER_CAST<Kinect>(kinect)->getCurrentColorPointCloud());
 
     auto kukiearm = HardwareFactory::get().loadHardware("kukie_left_arm");
     kukiearm->install();
@@ -33,16 +38,16 @@ int main(int argc, char** args) {
     auto localizerSkill = make_shared<LocalizeObject>(storage, KUKADU_DYNAMIC_POINTER_CAST<Kinect>(kinect));
     try { localizerSkill->createSkillFromThis("localize_object"); } catch(KukaduException& ex) {}
 
-    localizerSkill->setCenterZ(-0.5);
     localizerSkill->execute();
 
     auto position = PoseEstimatorFactory::get().getPoseFor("something");
-
+/*
     position.pose.position.x = position.pose.position.x - 0.43;
     position.pose.position.y = position.pose.position.y + 0.42;
     position.pose.position.z = position.pose.position.z - 0.03;
     position.pose.position.z = position.pose.position.z + 0.15;
-    //position.pose.position.z = position.pose.position.z + 0.15;
+    */
+    position.pose.position.z = position.pose.position.z + 0.15;
     cout << position.pose.position.x << " " << position.pose.position.y << " " << position.pose.position.z << endl;
     tf::Quaternion rot = rpyToQuat(0.0, M_PI, 0.0);
     position.pose.orientation.x = rot.getX();
