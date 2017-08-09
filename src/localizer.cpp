@@ -9,7 +9,7 @@ int main(int argc, char** args) {
     ros::init(argc, args, "kukadu_artracker_demo"); ros::NodeHandle node; sleep(1);
     ros::AsyncSpinner spinner(10); spinner.start();
 
-    HardwareFactory::get().setSimulation(true);
+    HardwareFactory::get().setSimulation(false);
 
     auto& storage = StorageSingleton::get();
 
