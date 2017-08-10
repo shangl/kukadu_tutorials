@@ -1,12 +1,10 @@
 #include <string>
-#include <iostream>
 #include <armadillo>
 #include <kukadu/kukadu.hpp>
 
 #include <QStyle>
 #include <QStyleFactory>
 #include <QtWidgets/QApplication>
-#include <boost/program_options.hpp>
 
 
 using namespace std;
