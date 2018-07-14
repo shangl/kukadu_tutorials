@@ -15,9 +15,11 @@ int main(int argc, char** args) {
         robotType = string(args[1]);
 
     StorageSingleton& storage = StorageSingleton::get();
+    auto& hardwareFactory = kukadu::HardwareFactory::get();
 
     cout << "setting up control queue" << endl;
-    auto realLeftQueue = make_shared<KukieControlQueue>(storage, "robinn", robotType, "left_arm", node);
+    //auto realLeftQueue = make_shared<KukieControlQueue>(storage, "left_arm", true);
+    auto realLeftQueue = dynamic_pointer_cast<KukieControlQueue>(hardwareFactory.loadHardware("kukie_left_arm"));
     realLeftQueue->install();
 
     auto komo = make_shared<Komo>(realLeftQueue, resolvePath("$KUKADU_HOME/external/komo/share/data/kuka/data/iis_robot.kvg"), resolvePath("$KUKADU_HOME/external/komo/share/data/kuka/config/MT.cfg"), realLeftQueue->getRobotSidePrefix());

@@ -13,7 +13,7 @@ int main(int argc, char** args) {
     StorageSingleton& storage = StorageSingleton::get();
 
     cout << "setting up control queue" << endl;
-    auto realLeftQueue = make_shared<KukieControlQueue>(storage, "robinn", "simulation", "left_arm", node);
+    auto realLeftQueue = make_shared<KukieControlQueue>(storage, "simulation", "left_arm", node);
     auto simple = make_shared<SimplePlanner>(realLeftQueue, realLeftQueue->getKinematics());
     realLeftQueue->setPathPlanner(simple);
 
