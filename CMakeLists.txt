@@ -3,6 +3,8 @@ project(kukadu_tutorials)
 
 set(CMAKE_BUILD_TYPE Debug)
 
+include(CheckCXXCompilerFlag)
+
 find_package(catkin REQUIRED COMPONENTS
   kukadu
   actionlib_msgs
@@ -30,15 +32,16 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(PCL REQUIRED)
 find_package(Boost 1.54 REQUIRED)
 find_package(Armadillo REQUIRED)
-find_package(Qt5Widgets REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(PkgConfig REQUIRED)
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
-find_package(PkgConfig REQUIRED)
+find_package(Qt5WebKitWidgets REQUIRED)
 
 include_directories(
     include
+    ${Qt5WebKitWidgets_INCLUDE_DIRS}
     ${catkin_INCLUDE_DIRS}
 )
 
@@ -108,10 +111,10 @@ endif()
 #target_link_libraries(autonomoustest kukadu ${catkin_LIBRARIES} svm)
 
 add_executable(localizer src/localizer.cpp)
-target_link_libraries(localizer kukadu kukaduvision kukadu kukaduvision ${catkin_LIBRARIES} svm)
+target_link_libraries(localizer ${ARMADILLO_LIBRARIES} Qt5::Widgets Qt5::WebKitWidgets ${catkin_LIBRARIES})
 
 add_executable(graphicalprogramming src/graphicalprogramming.cpp)
-target_link_libraries(graphicalprogramming kukadu kukaduvision kukadu kukaduvision ${catkin_LIBRARIES} ${QT_LIBRARIES} kukadugui svm)
+target_link_libraries(graphicalprogramming ${ARMADILLO_LIBRARIES} Qt5::Widgets Qt5::WebKitWidgets ${catkin_LIBRARIES} ${QT_LIBRARIES})
 
 if(COMPILER_SUPPORTS_CXX11)
 #    SET_TARGET_PROPERTIES(control_queue PROPERTIES COMPILE_FLAGS "-std=c++11")
@@ -167,5 +170,5 @@ endif()
 #add_dependencies(calibrator ${catkin_EXPORTED_TARGETS} artoolkitplus kukadu svm)
 #add_dependencies(exporter ${catkin_EXPORTED_TARGETS} artoolkitplus kukadu svm)
 #add_dependencies(autonomoustest ${catkin_EXPORTED_TARGETS} artoolkitplus kukadu svm)
-add_dependencies(localizer ${catkin_EXPORTED_TARGETS} kukadu kukadugui kukaduvision svm)
-add_dependencies(graphicalprogramming ${catkin_EXPORTED_TARGETS} kukadu kukadugui kukaduvision svm)
+add_dependencies(localizer ${ARMADILLO_LIBRARIES} Qt5::Widgets Qt5::WebKitWidgets ${catkin_EXPORTED_TARGETS} svm)
+add_dependencies(graphicalprogramming ${ARMADILLO_LIBRARIES} Qt5::Widgets Qt5::WebKitWidgets ${catkin_EXPORTED_TARGETS} svm)
