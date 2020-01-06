@@ -56,6 +56,14 @@ else()
     message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
+if($ENV{ROS_DISTRO} STREQUAL "kinetic")
+    add_definitions(-DROSKINETIC)
+elseif($ENV{ROS_DISTRO} STREQUAL "melodic")
+    add_definitions(-DROSKINETIC)
+else()
+    add_definitions(-DUSEOLD)
+endif()
+
 #add_executable(guided src/guided.cpp)
 #target_link_libraries(guided ${ARMADILLO_LIBRARIES} Qt5::Widgets Qt5::WebKitWidgets ${catkin_LIBRARIES})
 

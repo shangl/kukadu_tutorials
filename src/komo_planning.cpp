@@ -19,10 +19,15 @@ int main(int argc, char** args) {
 
     cout << "setting up control queue" << endl;
     //auto realLeftQueue = make_shared<KukieControlQueue>(storage, "left_arm", true);
+    //auto realLeftQueue = make_shared<KukieControlQueue>(storage, "simulation", "left_arm", node, true, nullptr, nullptr, 0.05, 0.05);
+    //realLeftQueue->install();
+
     auto realLeftQueue = dynamic_pointer_cast<KukieControlQueue>(hardwareFactory.loadHardware("kukie_left_arm"));
     realLeftQueue->install();
 
-    auto komo = make_shared<Komo>(realLeftQueue, resolvePath("$KUKADU_HOME/external/komo/share/data/kuka/data/iis_robot.kvg"), resolvePath("$KUKADU_HOME/external/komo/share/data/kuka/config/MT.cfg"), realLeftQueue->getRobotSidePrefix());
+	vector<string> sidePrefixes = {realLeftQueue->getRobotSidePrefix()};
+    auto komo = make_shared<Komo>(realLeftQueue, resolvePath("$KUKADU_HOME/external/komo/share/data/kuka/data/iis_robot.kvg"),
+    resolvePath("$KUKADU_HOME/external/komo/share/data/kuka/config/MT.cfg"), sidePrefixes);
     realLeftQueue->setPathPlanner(komo);
     realLeftQueue->setKinematics(komo);
 
@@ -34,8 +39,8 @@ int main(int argc, char** args) {
         realLeftQueue->stopCurrentMode();
         realLeftQueue->switchMode(KukieControlQueue::KUKA_JNT_IMP_MODE);
     }
-
-    /****** stuff is set up now --> here you can move as much as you want *******/
+    
+    // stuff is set up now --> here you can move as much as you want
 
     cout << "joint ptp" << endl;
     realLeftQueue->jointPtp({-1.5, 1.56, 2.33, -1.74, -1.85, 1.27, 0.71});
@@ -50,8 +55,8 @@ int main(int argc, char** args) {
     nextPose.position.z = 0.45;
     realLeftQueue->cartesianPtp(nextPose, 10.0);
     cout << "second ptp done" << endl;
-
-    /****** done with moving? --> clean up everything and quit *******/
+    
+    // done with moving? --> clean up everything and quit
 
     realLeftQueue->stopCurrentMode();
     realLeftQueue->stopQueue();
